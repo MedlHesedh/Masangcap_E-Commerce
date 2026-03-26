@@ -316,9 +316,8 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
           <p className="text-gray-400 text-sm">© 2026 Portfolio Showcase. Built with Next.js & TypeScript.</p>
           <div className="flex gap-8 text-sm font-medium text-gray-400">
-            <a href="#" className="hover:text-black transition-colors">LinkedIn</a>
-            <a href="#" className="hover:text-black transition-colors">Twitter</a>
-            <a href="#" className="hover:text-black transition-colors">Dribbble</a>
+            <a href="https://www.linkedin.com/in/medl-hesedh-masangcap-910119304/" className="hover:text-black transition-colors">LinkedIn</a>
+            
           </div>
         </div>
       </footer>
