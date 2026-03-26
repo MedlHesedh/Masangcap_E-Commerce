@@ -31,7 +31,7 @@ const Navbar = ({ scrolled, activePage, setActivePage }: {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'py-4' : 'py-8'}`}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className={`rounded-3xl transition-all duration-500 ${scrolled ? 'glass px-6 py-3 shadow-xl shadow-primary/5' : 'px-0 py-0'}`}>
+        <div className={`rounded-3xl transition-all duration-700 ease-in-out ${scrolled ? 'glass px-6 py-3' : 'px-0 py-0'}`}>
           <div className="flex items-center justify-between">
             <div 
               className="flex items-center gap-3 group cursor-pointer"
@@ -84,7 +84,7 @@ const Navbar = ({ scrolled, activePage, setActivePage }: {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-b border-secondary/5 overflow-hidden"
+            className="lg:hidden bg-white border-b border-primary/10 overflow-hidden"
           >
             <div className="px-6 py-8 flex flex-col gap-6">
               {navItems.map(item => (
