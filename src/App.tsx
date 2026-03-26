@@ -47,7 +47,7 @@ export default function App() {
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
               <ShoppingCart className="text-white w-5 h-5" />
             </div>
-            <span className="font-bold tracking-tight text-lg">Portfolio.</span>
+            <span className="font-bold tracking-tight text-lg">Masangcap E-Commerce</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-500">
             <a href="#overview" className="hover:text-black transition-colors">Overview</a>
