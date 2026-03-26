@@ -153,9 +153,10 @@ const Footer = ({ setActivePage }: { setActivePage: (page: string) => void }) =>
         <div className="md:col-span-3">
           <h4 className="font-black text-secondary mb-8 uppercase tracking-widest text-xs">Contact</h4>
           <ul className="space-y-4 text-secondary/60 font-bold">
-            <li className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> 123 Builder St, Manila</li>
-            <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> +63 912 345 6789</li>
-            <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> hello@structura.ph</li>
+            <li className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Orion, Bataan</li>
+            <li className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Balanga, Bataan</li>
+            <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> +63 912 491 2134</li>
+            <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> sdglandsph@gmail.com</li>
           </ul>
         </div>
       </div>
@@ -228,7 +229,7 @@ const HomePage = ({ setActivePage }: { setActivePage: (page: string) => void }) 
           >
             <div className="aspect-square bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-secondary/5 p-4">
               <img 
-                src="https://images.unsplash.com/photo-1503387762-592dee58c460?w=1200" 
+                src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200" 
                 alt="Modern Architecture" 
                 className="w-full h-full object-cover rounded-[2.5rem]"
               />
