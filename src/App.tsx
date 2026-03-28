@@ -369,6 +369,11 @@ const PremiumSlider = ({
   const next = () => setCurrentIndex((prev) => (prev + 1) % items.length);
   const prev = () => setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
 
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
+
   return (
     <div className="relative min-h-[600px] flex flex-col lg:flex-row items-center gap-12 lg:gap-20 py-12">
       {/* Left Content */}
@@ -445,7 +450,20 @@ const PremiumSlider = ({
 
       {/* Right Slider */}
       <div className="lg:w-3/5 w-full relative h-[500px] md:h-[700px] flex items-center justify-center">
-        <div className="relative w-full h-full flex items-center">
+        <motion.div 
+          className="relative w-full h-full flex items-center cursor-grab active:cursor-grabbing"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={(e, { offset, velocity }) => {
+            const swipe = swipePower(offset.x, velocity.x);
+            if (swipe < -swipeConfidenceThreshold) {
+              next();
+            } else if (swipe > swipeConfidenceThreshold) {
+              prev();
+            }
+          }}
+        >
           <AnimatePresence mode="popLayout">
             {items.map((item, index) => {
               // Calculate relative position
@@ -470,16 +488,20 @@ const PremiumSlider = ({
                   }}
                   exit={{ opacity: 0, x: -200, scale: 0.8 }}
                   transition={{ type: "spring", stiffness: 200, damping: 25 }}
-                  className={`absolute h-[80%] md:h-[90%] rounded-[2.5rem] md:rounded-[4rem] overflow-hidden shadow-2xl shadow-secondary/20 border-4 border-white cursor-pointer group`}
+                  className={`absolute h-[80%] md:h-[90%] rounded-[2.5rem] md:rounded-[4rem] overflow-hidden shadow-2xl shadow-secondary/20 border-4 border-white cursor-pointer group select-none`}
                   style={{ 
                     width: '75%',
                     left: '12.5%',
                   }}
                   onClick={() => setCurrentIndex(index)}
                 >
-                  <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                  <img 
+                    src={item.img} 
+                    alt={item.title} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 pointer-events-none" 
+                  />
                   {position === 0 && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-secondary/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-12">
+                    <div className="absolute inset-0 bg-gradient-to-t from-secondary/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-12 pointer-events-none">
                       <div className="badge bg-white text-secondary mb-4">View Details</div>
                     </div>
                   )}
@@ -487,7 +509,7 @@ const PremiumSlider = ({
               );
             })}
           </AnimatePresence>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
