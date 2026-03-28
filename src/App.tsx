@@ -500,11 +500,6 @@ const PremiumSlider = ({
                     alt={item.title} 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 pointer-events-none" 
                   />
-                  {position === 0 && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-secondary/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-12 pointer-events-none">
-                      <div className="badge bg-white text-secondary mb-4">View Details</div>
-                    </div>
-                  )}
                 </motion.div>
               );
             })}
