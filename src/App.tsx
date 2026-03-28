@@ -469,16 +469,26 @@ const EstimatorPage = () => {
               {/* Area Input */}
               <div>
                 <label className="block text-sm font-black text-secondary/40 uppercase tracking-widest mb-6">Project Area (sqm)</label>
-                <div className="flex items-center gap-8">
+                <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-8">
                   <input 
                     type="range" 
                     min="20" 
                     max="1000" 
                     value={area} 
-                    onChange={(e) => setArea(parseInt(e.target.value))}
-                    className="w-full accent-primary"
+                    onChange={(e) => setArea(parseInt(e.target.value) || 0)}
+                    className="w-full accent-primary h-2 bg-secondary/5 rounded-lg appearance-none cursor-pointer"
                   />
-                  <div className="w-32 text-4xl font-black text-secondary tabular-nums">{area}</div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <div className="relative">
+                      <input 
+                        type="number"
+                        value={area}
+                        onChange={(e) => setArea(Math.max(0, parseInt(e.target.value) || 0))}
+                        className="w-28 md:w-36 text-3xl md:text-4xl font-black text-secondary tabular-nums bg-white border border-secondary/10 rounded-xl px-4 py-2 focus:outline-none focus:border-primary transition-all text-center shadow-sm"
+                      />
+                    </div>
+                    <span className="text-[10px] md:text-xs font-black text-secondary/40 uppercase tracking-widest">sqm</span>
+                  </div>
                 </div>
               </div>
 
