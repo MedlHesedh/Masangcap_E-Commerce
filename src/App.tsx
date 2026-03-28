@@ -13,6 +13,109 @@ import { SERVICES, FINISHES, FEATURES } from './data';
 
 // --- Components ---
 
+const Modal = ({ item, isOpen, onClose }: { item: any, isOpen: boolean, onClose: () => void }) => {
+  if (!item) return null;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-secondary/80 backdrop-blur-xl"
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="relative w-full max-w-5xl bg-white rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh] md:max-h-[80vh]"
+          >
+            <button 
+              onClick={onClose}
+              className="absolute top-4 right-4 md:top-8 md:right-8 z-10 w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all"
+            >
+              <X className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+
+            <div className="w-full md:w-1/2 h-64 md:h-auto relative">
+              <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-secondary/60 to-transparent md:hidden" />
+              <div className="absolute bottom-6 left-6 md:hidden">
+                <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2 block">{item.category}</span>
+                <h3 className="text-2xl font-black text-white tracking-tighter">{item.title}</h3>
+              </div>
+            </div>
+
+            <div className="w-full md:w-1/2 p-8 md:p-16 overflow-y-auto custom-scrollbar">
+              <div className="hidden md:block mb-8">
+                <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-4 block">{item.category}</span>
+                <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary tracking-tighter leading-none italic mb-6">
+                  {item.title}
+                </h3>
+              </div>
+
+              <div className="space-y-8">
+                <div>
+                  <h4 className="text-xs font-black text-secondary/30 uppercase tracking-widest mb-4">Overview</h4>
+                  <p className="text-lg text-secondary/70 font-medium leading-relaxed">
+                    {item.longDescription || item.description}
+                  </p>
+                </div>
+
+                {item.features && (
+                  <div>
+                    <h4 className="text-xs font-black text-secondary/30 uppercase tracking-widest mb-4">Key Features</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {item.features.map((feature: string, i: number) => (
+                        <div key={i} className="flex items-center gap-3">
+                          <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                            <CheckCircle2 className="w-3 h-3" />
+                          </div>
+                          <span className="text-sm font-bold text-secondary/60">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {item.durability && (
+                  <div>
+                    <h4 className="text-xs font-black text-secondary/30 uppercase tracking-widest mb-4">Durability Rating</h4>
+                    <div className="flex items-center gap-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star 
+                          key={i} 
+                          className={`w-5 h-5 ${i < parseInt(item.durability) ? 'text-primary fill-primary' : 'text-secondary/10'}`} 
+                        />
+                      ))}
+                      <span className="ml-2 text-sm font-black text-secondary">{item.durability}/5</span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-8 border-t border-secondary/5 flex flex-col sm:flex-row items-center justify-between gap-6">
+                  {item.price && (
+                    <div>
+                      <p className="text-[10px] font-black text-secondary/30 uppercase tracking-widest mb-1">Investment</p>
+                      <p className="text-3xl font-black text-secondary tracking-tight">{item.price}</p>
+                    </div>
+                  )}
+                  <button className="btn-primary w-full sm:w-auto px-10 py-5">
+                    Add to Project
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 const Navbar = ({ scrolled, activePage, setActivePage }: { 
   scrolled: boolean, 
   activePage: string, 
@@ -185,7 +288,7 @@ const Footer = ({ setActivePage }: { setActivePage: (page: string) => void }) =>
 
 // --- Pages ---
 
-const HomePage = ({ setActivePage }: { setActivePage: (page: string) => void }) => (
+const HomePage = ({ setActivePage, openModal }: { setActivePage: (page: string) => void, openModal: (item: any) => void }) => (
   <motion.div 
     initial={{ opacity: 0 }} 
     animate={{ opacity: 1 }} 
@@ -304,11 +407,16 @@ const HomePage = ({ setActivePage }: { setActivePage: (page: string) => void }) 
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
           {SERVICES.slice(0, 3).map((s) => (
-            <div key={s.id} className="card-premium group cursor-pointer overflow-hidden flex flex-col" onClick={() => setActivePage('services')}>
-              <div className="aspect-video overflow-hidden shrink-0">
+            <div key={s.id} className="card-premium group cursor-pointer overflow-hidden flex flex-col">
+              <div className="aspect-video overflow-hidden shrink-0 relative" onClick={() => openModal(s)}>
                 <img src={s.img} alt={s.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white">
+                    <Star className="w-5 h-5 fill-white" />
+                  </div>
+                </div>
               </div>
-              <div className="p-6 md:p-8 flex-1 flex flex-col">
+              <div className="p-6 md:p-8 flex-1 flex flex-col" onClick={() => setActivePage('services')}>
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-[10px] font-black text-primary uppercase tracking-widest">{s.category}</span>
                   <span className="text-xs md:text-sm font-bold text-secondary/40">{s.price}</span>
@@ -358,10 +466,12 @@ const HomePage = ({ setActivePage }: { setActivePage: (page: string) => void }) 
 const PremiumSlider = ({ 
   items, 
   onAction, 
+  onImageClick,
   actionLabel = "Add to Estimate" 
 }: { 
   items: any[], 
   onAction?: (item: any) => void,
+  onImageClick?: (item: any) => void,
   actionLabel?: string
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -421,7 +531,13 @@ const PremiumSlider = ({
                     width: window.innerWidth < 640 ? '90%' : '80%',
                     left: window.innerWidth < 640 ? '5%' : '10%',
                   }}
-                  onClick={() => setCurrentIndex(index)}
+                  onClick={() => {
+                    if (position === 0) {
+                      onImageClick?.(item);
+                    } else {
+                      setCurrentIndex(index);
+                    }
+                  }}
                 >
                   <img 
                     src={item.img} 
@@ -510,7 +626,7 @@ const PremiumSlider = ({
   );
 };
 
-const ServicesPage = () => (
+const ServicesPage = ({ openModal }: { openModal: (item: any) => void }) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }} 
     animate={{ opacity: 1, y: 0 }} 
@@ -527,12 +643,13 @@ const ServicesPage = () => (
       <PremiumSlider 
         items={SERVICES} 
         actionLabel="Add to Estimate"
+        onImageClick={openModal}
       />
     </div>
   </motion.div>
 );
 
-const FinishesPage = () => (
+const FinishesPage = ({ openModal }: { openModal: (item: any) => void }) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }} 
     animate={{ opacity: 1, y: 0 }} 
@@ -549,6 +666,7 @@ const FinishesPage = () => (
       <PremiumSlider 
         items={FINISHES} 
         actionLabel="Select Style"
+        onImageClick={openModal}
       />
     </div>
   </motion.div>
@@ -790,6 +908,17 @@ const QuotePage = () => {
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [activePage, setActivePage] = useState('home');
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (item: any) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -808,15 +937,21 @@ export default function App() {
 
       <main>
         <AnimatePresence mode="wait">
-          {activePage === 'home' && <HomePage setActivePage={setActivePage} />}
-          {activePage === 'services' && <ServicesPage key="services" />}
-          {activePage === 'finishes' && <FinishesPage key="finishes" />}
+          {activePage === 'home' && <HomePage setActivePage={setActivePage} openModal={openModal} />}
+          {activePage === 'services' && <ServicesPage openModal={openModal} />}
+          {activePage === 'finishes' && <FinishesPage openModal={openModal} />}
           {activePage === 'estimator' && <EstimatorPage key="estimator" />}
           {activePage === 'quote' && <QuotePage key="quote" />}
         </AnimatePresence>
       </main>
 
       <Footer setActivePage={setActivePage} />
+
+      <Modal 
+        item={selectedItem} 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+      />
     </div>
   );
 }
