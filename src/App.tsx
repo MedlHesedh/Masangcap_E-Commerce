@@ -210,7 +210,7 @@ const Navbar = ({ scrolled, onOpenSummary }: { scrolled: boolean, onOpenSummary:
               <button 
                 className="btn-primary text-[10px] md:text-sm py-2 px-4 md:py-3 md:px-6"
                 onClick={() => {
-                  window.history.pushState({}, '', '/estimator');
+                  window.history.pushState({}, '', '/design-estimator');
                   window.dispatchEvent(new PopStateEvent('popstate'));
                 }}
               >
@@ -305,7 +305,7 @@ const Footer = () => (
           <ul className="space-y-3 md:space-y-4 text-secondary/60 font-bold text-sm md:text-base">
             <li className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary shrink-0" /> Orion, Bataan</li>
             <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary shrink-0" /> +63 912 491 2134</li>
-            <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary shrink-0" /> sdglandsph@gmail.com</li>
+            <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary shrink-0" /> medlmasangcapbusiness@gmail.com</li>
           </ul>
         </div>
       </div>

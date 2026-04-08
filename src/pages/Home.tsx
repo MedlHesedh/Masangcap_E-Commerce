@@ -41,7 +41,7 @@ export const Home = ({ setActivePage, openModal }: { setActivePage: (page: strin
             <div className="flex flex-col sm:flex-row gap-4 md:gap-5">
               <button 
                 className="btn-primary text-base md:text-lg px-8 md:px-10 py-4 md:py-5"
-                onClick={() => setActivePage('estimator')}
+                onClick={() => setActivePage('design-estimator')}
               >
                 Start Your Estimate <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
               </button>
@@ -166,7 +166,7 @@ export const Home = ({ setActivePage, openModal }: { setActivePage: (page: strin
         <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6">
           <button 
             className="btn-primary text-lg md:text-xl px-10 md:px-12 py-4 md:py-6"
-            onClick={() => setActivePage('estimator')}
+            onClick={() => setActivePage('design-estimator')}
           >
             Start Estimate
           </button>

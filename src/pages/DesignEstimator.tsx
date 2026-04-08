@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { useDesignEstimator } from '../hooks/useDesignEstimator';
 import { 
@@ -9,9 +9,12 @@ import {
   AdditionalServices, 
   CostSummaryCard 
 } from '../components/estimator/EstimatorComponents';
+import { SuccessModal } from '../components/estimator/SuccessModal';
 import { Calculator } from 'lucide-react';
+import { ADDITIONAL_SERVICES } from '../types/estimator';
 
 const DesignEstimator = () => {
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const { 
     state, 
     setClassification, 
@@ -21,6 +24,17 @@ const DesignEstimator = () => {
     toggleAdditionalService, 
     formattedCost 
   } = useDesignEstimator();
+
+  const projectDetails = `
+- Classification: ${state.classification}
+- Project Type: ${state.type}
+- Lot Area: ${state.lotArea} sqm
+- Number of Storeys: ${state.storeys}
+- Additional Services: ${state.additionalServices.length > 0 
+    ? state.additionalServices.map(id => ADDITIONAL_SERVICES.find(s => s.id === id)?.label).join(', ') 
+    : 'None'}
+- Estimated Design Cost: ${formattedCost}
+  `.trim();
 
   return (
     <motion.div 
@@ -78,10 +92,20 @@ const DesignEstimator = () => {
 
           {/* Right Side: Summary Card */}
           <div className="lg:col-span-5 lg:sticky lg:top-40">
-            <CostSummaryCard formattedCost={formattedCost} />
+            <CostSummaryCard 
+              formattedCost={formattedCost} 
+              onQuotation={() => setIsSuccessModalOpen(true)}
+            />
           </div>
         </div>
       </div>
+
+      <SuccessModal 
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        projectDetails={projectDetails}
+        recipientEmail="medlmasangcapbusiness@gmail.com"
+      />
     </motion.div>
   );
 };

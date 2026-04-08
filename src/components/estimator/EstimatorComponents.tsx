@@ -140,9 +140,11 @@ export const AdditionalServices = ({
 );
 
 export const CostSummaryCard = ({ 
-  formattedCost 
+  formattedCost,
+  onQuotation
 }: { 
-  formattedCost: string 
+  formattedCost: string,
+  onQuotation: () => void
 }) => (
   <div className="bg-white rounded-[2rem] p-8 md:p-10 shadow-xl shadow-secondary/5 border border-secondary/5 h-full flex flex-col">
     <div className="mb-8">
@@ -159,7 +161,10 @@ export const CostSummaryCard = ({
       <h4 className="text-xl font-black text-secondary mb-2">Ready to design your dream space?</h4>
       <p className="text-sm text-secondary/60 mb-8 font-medium">Get a formal quotation today!</p>
       
-      <button className="w-full bg-primary hover:bg-primary/90 text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+      <button 
+        onClick={onQuotation}
+        className="w-full bg-primary hover:bg-primary/90 text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98]"
+      >
         Get Quotation
       </button>
     </div>
