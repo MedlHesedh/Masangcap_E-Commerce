@@ -23,6 +23,7 @@ import { ServicesPage } from './pages/Services';
 import { FinishesPage } from './pages/Finishes';
 import { EstimatorPage } from './pages/Estimator';
 import { QuotePage } from './pages/Quote';
+import DesignEstimator from './pages/DesignEstimator';
 
 // Admin Pages
 import { AdminOverview } from './pages/admin/AdminOverview';
@@ -154,7 +155,7 @@ const Navbar = ({ scrolled, onOpenSummary }: { scrolled: boolean, onOpenSummary:
     { to: '/', label: 'Home' },
     { to: '/services', label: 'Services' },
     { to: '/finishes', label: 'Finishes' },
-    { to: '/estimator', label: 'Estimator' },
+    { to: '/design-estimator', label: 'Design Cost' },
     { to: '/quote', label: 'Get a Quote' }
   ];
 
@@ -284,7 +285,7 @@ const Footer = () => (
           <ul className="space-y-3 md:space-y-4 text-secondary/60 font-bold text-sm md:text-base">
             <li><a href="/services" className="hover:text-primary transition-colors">Services</a></li>
             <li><a href="/finishes" className="hover:text-primary transition-colors">Finishes</a></li>
-            <li><a href="/estimator" className="hover:text-primary transition-colors">Estimator</a></li>
+            <li><a href="/design-estimator" className="hover:text-primary transition-colors">Design Cost</a></li>
             <li><a href="/quote" className="hover:text-primary transition-colors">Quote</a></li>
           </ul>
         </div>
@@ -359,19 +360,11 @@ const AppContent = () => {
           <Route path="/services" element={<ServicesPage openModal={setModalItem} onAction={handleAdd} />} />
           <Route path="/finishes" element={<FinishesPage openModal={setModalItem} onAction={handleAdd} />} />
           <Route path="/estimator" element={<EstimatorPage onComplete={() => setIsSummaryOpen(true)} />} />
+          <Route path="/design-estimator" element={<DesignEstimator />} />
           <Route path="/quote" element={<QuotePage />} />
 
-          {/* Admin Routes */}
-          <Route path="/admin/dashboard" element={<AdminLayout><AdminOverview /></AdminLayout>} />
-          <Route path="/admin/projects" element={<AdminLayout><AdminProjects /></AdminLayout>} />
-          <Route path="/admin/services" element={<AdminLayout><AdminServices /></AdminLayout>} />
-          <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-
-          {/* Client Routes */}
-          <Route path="/portal/dashboard" element={<ClientLayout><ClientDashboard /></ClientLayout>} />
-          <Route path="/portal/documents" element={<ClientLayout><ClientDocuments /></ClientLayout>} />
-          <Route path="/portal/timeline" element={<ClientLayout><ClientTimeline /></ClientLayout>} />
-          <Route path="/portal" element={<Navigate to="/portal/dashboard" replace />} />
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AnimatePresence>
 
