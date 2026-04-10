@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const LEADS_FILE = path.join(__dirname, "leads.json");
+const LEADS_FILE = path.join(process.cwd(), "leads.json");
 
 // Initialize leads file if it doesn't exist
 if (!fs.existsSync(LEADS_FILE)) {
@@ -20,12 +20,25 @@ async function startServer() {
 
   app.use(express.json());
 
+  // Logging middleware
+  app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+  });
+
+  // API: Health Check
+  app.get("/api/health", (req, res) => {
+    res.json({ status: "ok", env: process.env.NODE_ENV, timestamp: new Date().toISOString() });
+  });
+
   // API: Save Lead
   app.post("/api/leads", (req, res) => {
+    console.log("POST /api/leads - Body:", JSON.stringify(req.body, null, 2));
     try {
       const newLead = {
         id: Date.now(),
         timestamp: new Date().toISOString(),
+        status: 'pending',
         ...req.body
       };
 
@@ -33,6 +46,7 @@ async function startServer() {
       leads.push(newLead);
       fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2));
 
+      console.log("Lead saved successfully. Total leads:", leads.length);
       res.status(201).json({ success: true, lead: newLead });
     } catch (error) {
       console.error("Error saving lead:", error);
@@ -102,10 +116,13 @@ async function startServer() {
     app.get('*', async (req, res, next) => {
       if (req.originalUrl.startsWith('/api')) return next();
       try {
-        const template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
+        const indexPath = path.resolve(process.cwd(), 'index.html');
+        console.log(`Serving index.html from: ${indexPath}`);
+        const template = fs.readFileSync(indexPath, 'utf-8');
         const html = await vite.transformIndexHtml(req.originalUrl, template);
         res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
       } catch (e) {
+        console.error("Error in SPA fallback:", e);
         next(e);
       }
     });

@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "timestamp": "2026-04-10T16:00:00.000Z",
+    "status": "pending",
+    "projectDetails": "Test Lead\n- Area: 100 sqm\n- Type: Residential",
+    "recipientEmail": "test@example.com",
+    "source": "/estimator"
+  }
+]
