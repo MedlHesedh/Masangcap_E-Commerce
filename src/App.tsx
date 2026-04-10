@@ -35,6 +35,8 @@ import { ClientDashboard } from './pages/portal/ClientDashboard';
 import { ClientDocuments } from './pages/portal/ClientDocuments';
 import { ClientTimeline } from './pages/portal/ClientTimeline';
 
+import { AdminDashboard } from './pages/AdminDashboard';
+
 // --- Shared Components ---
 
 const Modal = ({ item, isOpen, onClose, onAdd }: { item: any, isOpen: boolean, onClose: () => void, onAdd: (item: any) => void }) => {
@@ -362,6 +364,7 @@ const AppContent = () => {
           <Route path="/estimator" element={<EstimatorPage onComplete={() => setIsSummaryOpen(true)} />} />
           <Route path="/design-estimator" element={<DesignEstimator />} />
           <Route path="/quote" element={<QuotePage />} />
+          <Route path="/admin" element={<AdminDashboard />} />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />

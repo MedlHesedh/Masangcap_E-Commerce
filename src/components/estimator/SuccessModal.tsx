@@ -10,7 +10,22 @@ interface SuccessModalProps {
 }
 
 export const SuccessModal = ({ isOpen, onClose, projectDetails, recipientEmail }: SuccessModalProps) => {
-  const handleSendEmail = () => {
+  const handleSendEmail = async () => {
+    // Save to server database
+    try {
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectDetails,
+          recipientEmail,
+          source: window.location.pathname
+        })
+      });
+    } catch (error) {
+      console.error("Failed to save lead to server:", error);
+    }
+
     const subject = encodeURIComponent("New Project Quotation Request - Structura");
     const body = encodeURIComponent(
       `Hello Structura Team,\n\nI would like to request a formal quotation for my project with the following details:\n\n${projectDetails}\n\nPlease get back to me as soon as possible.\n\nBest regards,`

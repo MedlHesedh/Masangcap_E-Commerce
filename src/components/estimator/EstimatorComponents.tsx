@@ -87,19 +87,44 @@ export const StoreyInput = ({
 }: { 
   value: number, 
   onChange: (val: number) => void 
-}) => (
-  <div className="space-y-2">
-    <label className="text-sm font-bold text-secondary/60">Number of Storeys</label>
-    <input 
-      type="number" 
-      min="1" 
-      max="10"
-      value={value}
-      onChange={(e) => onChange(Math.max(1, parseInt(e.target.value) || 1))}
-      className="w-full bg-white border border-secondary/10 rounded-xl px-4 py-3.5 text-secondary font-bold focus:outline-none focus:border-primary transition-all"
-    />
-  </div>
-);
+}) => {
+  const [localValue, setLocalValue] = React.useState(value.toString());
+
+  React.useEffect(() => {
+    setLocalValue(value.toString());
+  }, [value]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setLocalValue(val);
+    const parsed = parseInt(val);
+    if (!isNaN(parsed) && parsed > 0) {
+      onChange(parsed);
+    }
+  };
+
+  const handleBlur = () => {
+    if (localValue === '' || isNaN(parseInt(localValue)) || parseInt(localValue) < 1) {
+      setLocalValue('1');
+      onChange(1);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <label className="text-sm font-bold text-secondary/60">Number of Storeys</label>
+      <input 
+        type="number" 
+        min="1" 
+        max="10"
+        value={localValue}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        className="w-full bg-white border border-secondary/10 rounded-xl px-4 py-3.5 text-secondary font-bold focus:outline-none focus:border-primary transition-all"
+      />
+    </div>
+  );
+};
 
 export const AdditionalServices = ({ 
   selected, 

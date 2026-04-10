@@ -12,8 +12,24 @@ export const QuotePage = () => {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Save to server database
+    try {
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectDetails,
+          recipientEmail: 'medlmasangcapbusiness@gmail.com',
+          source: window.location.pathname
+        })
+      });
+    } catch (error) {
+      console.error("Failed to save lead to server:", error);
+    }
+
     setIsSuccessModalOpen(true);
   };
 
