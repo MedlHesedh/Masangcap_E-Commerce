@@ -159,8 +159,7 @@ const Navbar = ({ scrolled, onOpenSummary }: { scrolled: boolean, onOpenSummary:
     { to: '/finishes', label: 'Finishes' },
     { to: '/design-estimator', label: 'Design Cost' },
     { to: '/estimator', label: 'Build Cost' },
-    { to: '/quote', label: 'Get a Quote' },
-    { to: '/admin', label: 'Admin' }
+    { to: '/quote', label: 'Get a Quote' }
   ];
 
   const cartCount = state.selectedServices.length + state.selectedFinishes.length;
