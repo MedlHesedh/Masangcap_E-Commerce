@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { Mail, Clock, FileText, RefreshCcw, LayoutDashboard, Trash2, CheckCircle, Circle } from 'lucide-react';
+import { DeleteConfirmationModal } from '../components/admin/DeleteConfirmationModal';
 
 interface Lead {
   id: number;
@@ -14,6 +15,7 @@ interface Lead {
 export const AdminDashboard = () => {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
+  const [leadToDelete, setLeadToDelete] = useState<number | null>(null);
 
   const fetchLeads = async () => {
     setLoading(true);
@@ -28,11 +30,11 @@ export const AdminDashboard = () => {
     }
   };
 
-  const deleteLead = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this lead?')) return;
+  const handleDeleteConfirm = async () => {
+    if (leadToDelete === null) return;
     try {
-      await fetch(`/api/admin/leads/${id}`, { method: 'DELETE' });
-      setLeads(leads.filter(l => l.id !== id));
+      await fetch(`/api/admin/leads/${leadToDelete}`, { method: 'DELETE' });
+      setLeads(leads.filter(l => l.id !== leadToDelete));
     } catch (error) {
       console.error("Failed to delete lead:", error);
     }
@@ -141,7 +143,7 @@ export const AdminDashboard = () => {
                         {lead.status === 'done' ? 'Done' : 'Mark Done'}
                       </button>
                       <button 
-                        onClick={() => deleteLead(lead.id)}
+                        onClick={() => setLeadToDelete(lead.id)}
                         className="w-12 flex items-center justify-center bg-red-50 text-red-500 hover:bg-red-100 rounded-xl transition-all"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -154,6 +156,13 @@ export const AdminDashboard = () => {
           </div>
         )}
       </div>
+
+      <DeleteConfirmationModal 
+        isOpen={leadToDelete !== null}
+        onClose={() => setLeadToDelete(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Lead"
+      />
     </motion.div>
   );
 };
