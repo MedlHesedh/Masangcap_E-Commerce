@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { Mail, Clock, FileText, RefreshCcw, LayoutDashboard } from 'lucide-react';
+import { Mail, Clock, FileText, RefreshCcw, LayoutDashboard, Trash2, CheckCircle, Circle } from 'lucide-react';
 
 interface Lead {
   id: number;
@@ -8,6 +8,7 @@ interface Lead {
   projectDetails: string;
   recipientEmail: string;
   source: string;
+  status?: 'pending' | 'done';
 }
 
 export const AdminDashboard = () => {
@@ -24,6 +25,30 @@ export const AdminDashboard = () => {
       console.error("Failed to fetch leads:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const deleteLead = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this lead?')) return;
+    try {
+      await fetch(`/api/admin/leads/${id}`, { method: 'DELETE' });
+      setLeads(leads.filter(l => l.id !== id));
+    } catch (error) {
+      console.error("Failed to delete lead:", error);
+    }
+  };
+
+  const toggleStatus = async (id: number, currentStatus?: string) => {
+    const newStatus = currentStatus === 'done' ? 'pending' : 'done';
+    try {
+      await fetch(`/api/admin/leads/${id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      setLeads(leads.map(l => l.id === id ? { ...l, status: newStatus as any } : l));
+    } catch (error) {
+      console.error("Failed to update status:", error);
     }
   };
 
@@ -76,7 +101,7 @@ export const AdminDashboard = () => {
                 key={lead.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-[2rem] p-8 border border-secondary/5 shadow-xl hover:shadow-2xl transition-all"
+                className={`bg-white rounded-[2rem] p-8 border border-secondary/5 shadow-xl hover:shadow-2xl transition-all ${lead.status === 'done' ? 'opacity-60' : ''}`}
               >
                 <div className="flex flex-col md:flex-row justify-between gap-8">
                   <div className="flex-1">
@@ -88,18 +113,39 @@ export const AdminDashboard = () => {
                         <Clock className="w-3 h-3" />
                         {new Date(lead.timestamp).toLocaleString()}
                       </div>
+                      {lead.status === 'done' && (
+                        <div className="flex items-center gap-1 text-green-600 text-[10px] font-black uppercase tracking-widest">
+                          <CheckCircle className="w-3 h-3" />
+                          Completed
+                        </div>
+                      )}
                     </div>
                     <div className="bg-secondary/5 rounded-2xl p-6 whitespace-pre-wrap text-secondary/70 font-medium text-sm leading-relaxed">
                       {lead.projectDetails}
                     </div>
                   </div>
-                  <div className="md:w-64 shrink-0">
-                    <div className="bg-secondary/5 rounded-2xl p-6 h-full flex flex-col justify-center">
+                  <div className="md:w-64 shrink-0 flex flex-col gap-4">
+                    <div className="bg-secondary/5 rounded-2xl p-6 flex-1 flex flex-col justify-center">
                       <p className="text-[10px] font-black text-secondary/30 uppercase tracking-widest mb-2">Recipient</p>
                       <div className="flex items-center gap-2 text-secondary font-bold text-sm break-all">
                         <Mail className="w-4 h-4 text-primary shrink-0" />
                         {lead.recipientEmail}
                       </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => toggleStatus(lead.id, lead.status)}
+                        className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-xs transition-all ${lead.status === 'done' ? 'bg-green-600 text-white' : 'bg-secondary/5 text-secondary hover:bg-secondary/10'}`}
+                      >
+                        {lead.status === 'done' ? <CheckCircle className="w-4 h-4" /> : <Circle className="w-4 h-4" />}
+                        {lead.status === 'done' ? 'Done' : 'Mark Done'}
+                      </button>
+                      <button 
+                        onClick={() => deleteLead(lead.id)}
+                        className="w-12 flex items-center justify-center bg-red-50 text-red-500 hover:bg-red-100 rounded-xl transition-all"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
                 </div>

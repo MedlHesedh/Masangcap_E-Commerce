@@ -50,6 +50,44 @@ async function startServer() {
     }
   });
 
+  // API: Update Lead Status
+  app.patch("/api/admin/leads/:id/status", (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const leads = JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"));
+      const index = leads.findIndex((l: any) => l.id === parseInt(id));
+      
+      if (index !== -1) {
+        leads[index].status = status;
+        fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2));
+        res.json(leads[index]);
+      } else {
+        res.status(404).json({ error: "Lead not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update lead" });
+    }
+  });
+
+  // API: Delete Lead
+  app.delete("/api/admin/leads/:id", (req, res) => {
+    try {
+      const { id } = req.params;
+      const leads = JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"));
+      const filteredLeads = leads.filter((l: any) => l.id !== parseInt(id));
+      
+      if (leads.length !== filteredLeads.length) {
+        fs.writeFileSync(LEADS_FILE, JSON.stringify(filteredLeads, null, 2));
+        res.json({ success: true });
+      } else {
+        res.status(404).json({ error: "Lead not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete lead" });
+    }
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
