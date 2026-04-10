@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { useProject } from '../context/ProjectContext';
+import { SuccessModal } from '../components/estimator/SuccessModal';
 
 export const EstimatorPage = ({ onComplete }: { onComplete: () => void }) => {
   const { state, dispatch } = useProject();
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const calculateEstimate = () => {
     const baseRates: Record<string, number> = {
@@ -22,6 +24,14 @@ export const EstimatorPage = ({ onComplete }: { onComplete: () => void }) => {
     return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(total);
   };
 
+  const projectSummary = `
+Build Cost Estimate:
+- Area: ${state.area} sqm
+- Construction Type: ${state.constructionType}
+- Finish Level: ${state.finishLevel}
+- Estimated Total: ${calculateEstimate()}
+  `.trim();
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }} 
@@ -32,7 +42,7 @@ export const EstimatorPage = ({ onComplete }: { onComplete: () => void }) => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-12 gap-16">
           <div className="lg:col-span-7">
-            <div className="badge bg-primary/10 text-primary border border-primary/20 mb-6">Project Estimator</div>
+            <div className="badge bg-primary/10 text-primary border border-primary/20 mb-6">Build Cost Module</div>
             <h1 className="text-5xl font-black text-secondary mb-8 tracking-tighter">Calculate Your Build</h1>
             
             <div className="space-y-12 mt-16">
@@ -121,15 +131,22 @@ export const EstimatorPage = ({ onComplete }: { onComplete: () => void }) => {
               </div>
 
               <button 
-                onClick={onComplete}
+                onClick={() => setIsSuccessModalOpen(true)}
                 className="w-full btn-primary py-4 md:py-5"
               >
-                Proceed to Project Summary
+                Get Quotation
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      <SuccessModal 
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        projectDetails={projectSummary}
+        recipientEmail="medlmasangcapbusiness@gmail.com"
+      />
     </motion.div>
   );
 };

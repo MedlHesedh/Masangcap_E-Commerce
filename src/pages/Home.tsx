@@ -168,13 +168,13 @@ export const Home = ({ setActivePage, openModal }: { setActivePage: (page: strin
             className="btn-primary text-lg md:text-xl px-10 md:px-12 py-4 md:py-6"
             onClick={() => setActivePage('design-estimator')}
           >
-            Start Estimate
+            Design Estimate
           </button>
           <button 
             className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-10 md:px-12 py-4 md:py-6 rounded-xl font-black text-lg md:text-xl hover:bg-white/20 transition-all"
-            onClick={() => setActivePage('quote')}
+            onClick={() => setActivePage('estimator')}
           >
-            Contact Sales
+            Build Estimate
           </button>
         </div>
       </div>

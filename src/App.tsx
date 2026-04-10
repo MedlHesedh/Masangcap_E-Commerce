@@ -158,6 +158,7 @@ const Navbar = ({ scrolled, onOpenSummary }: { scrolled: boolean, onOpenSummary:
     { to: '/services', label: 'Services' },
     { to: '/finishes', label: 'Finishes' },
     { to: '/design-estimator', label: 'Design Cost' },
+    { to: '/estimator', label: 'Build Cost' },
     { to: '/quote', label: 'Get a Quote' }
   ];
 
@@ -288,6 +289,7 @@ const Footer = () => (
             <li><a href="/services" className="hover:text-primary transition-colors">Services</a></li>
             <li><a href="/finishes" className="hover:text-primary transition-colors">Finishes</a></li>
             <li><a href="/design-estimator" className="hover:text-primary transition-colors">Design Cost</a></li>
+            <li><a href="/estimator" className="hover:text-primary transition-colors">Build Cost</a></li>
             <li><a href="/quote" className="hover:text-primary transition-colors">Quote</a></li>
           </ul>
         </div>
