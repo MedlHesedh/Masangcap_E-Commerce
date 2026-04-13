@@ -32,11 +32,11 @@ export const Home = ({ setActivePage, openModal }: { setActivePage: (page: strin
               <HardHat className="w-3 h-3" /> Redefining Construction E-Commerce
             </div>
             <h1 className="text-4xl sm:text-6xl md:text-8xl font-black text-secondary mb-6 md:mb-8 leading-[0.95] tracking-tighter">
-              Build your dream <br />
-              <span className="text-gradient">with precision.</span>
+              Built to last <br />
+              <span className="text-gradient">for generations.</span>
             </h1>
             <p className="text-lg md:text-2xl text-secondary/60 max-w-xl mb-8 md:mb-12 leading-relaxed font-medium">
-              The ultimate platform for construction services, material sourcing, and real-time project estimation.
+              Engineering excellence into every structure. The ultimate platform for premium construction services and precision estimation.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 md:gap-5">
               <button 
