@@ -51,24 +51,26 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ item, index, onAction, openMo
           {item.description}
         </p>
 
-        <div className="flex items-center justify-between gap-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+        <div className="flex items-center justify-between gap-4 transition-all duration-500">
           <div className="flex flex-col">
             <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">Starting at</span>
-            <span className="text-xl font-black text-white">{item.price}</span>
+            <span className="text-xl font-black text-white leading-none mt-1">{item.price}</span>
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button 
               onClick={() => openModal(item)}
+              aria-label="View Details"
               className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-secondary transition-all"
             >
               <ArrowUpRight className="w-5 h-5" />
             </button>
             <button 
               onClick={() => onAction(item)}
-              className="px-6 h-12 rounded-xl bg-primary text-white font-black text-sm flex items-center gap-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+              className={`h-12 rounded-xl bg-primary text-white font-black text-sm flex items-center gap-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 ${isLarge ? 'px-6' : 'px-4 md:px-0 md:w-12 justify-center'}`}
             >
-              <Plus className="w-4 h-4" /> Add
+              <Plus className="w-4 h-4" /> 
+              <span className={isLarge ? 'inline' : 'inline md:hidden'}>Add</span>
             </button>
           </div>
         </div>
