@@ -63,7 +63,7 @@ const Modal = ({ item, isOpen, onClose, onAdd }: { item: any, isOpen: boolean, o
               onClick={onClose}
               className="absolute top-4 right-4 md:top-8 md:right-8 z-10 w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all"
             >
-              <CloseIcon className="w-5 h-5 md:w-6 md:h-6" />
+              <CloseIcon className="w-5 h-5 md:w-6 md:h-6"  />
             </button>
 
             <div className="w-full md:w-1/2 h-64 md:h-auto relative">
