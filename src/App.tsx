@@ -221,8 +221,12 @@ const Navbar = ({ scrolled, onOpenSummary }: { scrolled: boolean, onOpenSummary:
                 <span className="xs:hidden">Estimate</span>
                 <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
               </button>
-              <button className="lg:hidden p-1.5 md:p-2 text-secondary" onClick={() => setIsOpen(!isOpen)}>
+              <button 
+                className="lg:hidden flex items-center gap-2 bg-primary/10 text-primary px-3 py-2 rounded-full border border-primary/20 transition-all hover:bg-primary/20" 
+                onClick={() => setIsOpen(!isOpen)}
+              >
                 {isOpen ? <X className="w-5 h-5 md:w-6 md:h-6" /> : <Menu className="w-5 h-5 md:w-6 md:h-6" />}
+                <span className="text-[10px] font-black uppercase tracking-widest hidden sm:block">Menu</span>
               </button>
             </div>
           </div>
